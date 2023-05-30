@@ -4,10 +4,10 @@ from cryptography.hazmat.backends import default_backend
 import socket
 import pem
 testerID={
-    "0x0a":b"verified",
-    "0x0b":b"verified",
-    "0x0c":b"verified",
-    "0x0d":b"verified"
+    "0x0a":b"x04x34x45x32",
+    "0x0b":b"3x45x67x3x2x3",
+    "0x0c":b"\x55\01\00\00\00\00",
+    "0x0d":b"\x68\01\00\00\00\00"
 }
 
 UDS_COMMANDS = {
@@ -69,10 +69,14 @@ while True:
     print("Decrypted Service ID:", decrypted_service_id.decode(),"\n")
     command = client_socket.recv(1024)
     print("Received command:", decrypted_service_id.decode(),"\n")
+    
     command = decrypted_service_id.decode()
+
     response = handle_uds_command(command)
     client_socket.sendall(response)
     
+
+
     print("Verification:Verified with service ID", decrypted_service_id.decode(),"\n")
     
     challenge=response.decode()
@@ -90,7 +94,8 @@ while True:
         encoding=serialization.Encoding.PEM,
         format=serialization.PublicFormat.SubjectPublicKeyInfo,
     )
-    
+    print("challege:-",response)
+
 
     encrypty_challenge = public_key2.encrypt(
     challenge.encode('utf-8'),
@@ -140,18 +145,38 @@ while True:
         print("Signature:\n\n", signature.hex())
         print(public_sign)
         print("\n")
-        
+        def Print_logg():
+            print("Printing loggs:-\n")
+            print("Encrypted Service ID:\n",encrypted_service_id,"\n")
+            print("decrypted service ID:-\n",decrypted_service_id)
+            print("Generated Challenge:\n",challenge)
+            print("Encrypted Challenge:-\n",encrypty_challenge)
+            print("Digitally Signed \n",signature)
+            print("Hashed Challenge\n",hashed_challege)
+
         if hashed_challege is signature:
             print("\n")
             print("Verified Succesfully")
-            print("\n")
+            Print_logg()
 
         else:
             print("\n")
 
             print("Failed")
             pki_socket.close()
-     
+        def Print_logg():
+            print("\n\n")
+            print("\t\t\tPrinting loggs:-\n")
+            print("\t\t\tEncrypted Service ID:\n",encrypted_service_id,"\n")
+            print("\t\t\tdecrypted service ID:-\n",decrypted_service_id)
+            print("\t\t\tGenerated Challenge:\n",challenge)
+            print("\t\t\tEncrypted Challenge:-\n",encrypty_challenge)
+            print("\t\t\tDigitally Singed \n",signature)
+            print("\t\t\tHashed Challenge\n",hashed_challege)
+
+
+            
+
     
         
 
