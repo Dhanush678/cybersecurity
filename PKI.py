@@ -9,10 +9,16 @@ private_key = rsa.generate_private_key(
     key_size=2048,
     backend=default_backend()
 )
+root_privatekey=rsa.generate_private_key(
+
+      public_exponent=65537,
+    key_size=2048,
+    backend=default_backend()
+)
 public_key = private_key.public_key()
 
 client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-client_socket.connect(('localhost', 5555))
+client_socket.connect(('150.129.63.34', 5555))
 try: public_pem = client_socket.recv(4096)
 except:print("failed")
 challenge = client_socket.recv(4096)
@@ -34,11 +40,12 @@ print(signature)
 client_socket.sendall(signature)
 
 
+
 public_pem2 = public_key.public_bytes(
     encoding=serialization.Encoding.PEM,
     format=serialization.PublicFormat.SubjectPublicKeyInfo,
 )
 client_socket.sendall(public_pem2)
 
-client_socket.close
+client_socket.close()
 

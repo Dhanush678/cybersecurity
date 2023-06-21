@@ -12,7 +12,7 @@ private_key = rsa.generate_private_key(
 public_key = private_key.public_key()
 
 client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-client_socket.connect(('localhost', 12345))
+client_socket.connect(('150.129.63.34', 12345))
 
 public_pem = client_socket.recv(4096)
 

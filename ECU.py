@@ -31,7 +31,7 @@ public_pem = public_key.public_bytes(
 
 
 server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-server_socket.bind(("localhost", 12345))
+server_socket.bind(("10.24.51.56", 12345))
 server_socket.listen(1)
 
 print("Server started. Waiting for client connection...\n")
@@ -43,8 +43,10 @@ while True:
     client_socket.sendall(public_pem)
 
     encrypted_service_id = client_socket.recv(4096)
+    print("Recieved Data\n\n")
+    print(encrypted_service_id)
 
-    decrypted_service_id = private_key.decrypt(
+    decrypted_service_id = public_key.decrypt(
         encrypted_service_id,
         padding.OAEP(
             mgf=padding.MGF1(algorithm=hashes.SHA256()),
@@ -110,7 +112,7 @@ while True:
     print("Generating challenge and encrypting\n\n")
     print(encrypty_challenge)
     pki = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    pki.bind(("localhost", 5555))
+    pki.bind(("169.254.140.221", 5555))
     pki.listen(1)
   
 
@@ -143,10 +145,9 @@ while True:
 
             return signature
         print("Signature:\n\n", signature.hex())
-        print(public_sign)
         print("\n")
         def Print_logg():
-            print("Printing loggs:-\n")
+            print("Printing logs:-\n")
             print("Encrypted Service ID:\n",encrypted_service_id,"\n")
             print("decrypted service ID:-\n",decrypted_service_id)
             print("Generated Challenge:\n",challenge)
