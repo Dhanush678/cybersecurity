@@ -12,18 +12,21 @@ now = datetime.datetime.now()
 
 tester_unit=0
 testerID={
-    "002702":b"x04x34x45x32",
-    "002734":b"3x45x67x3x2x3",
-    "002733":b"\x55\01\00\00\00\00",
-    "002731":b"\x68\01\00\00\00\00"
+    "04A":b"x04x34x45x32",
+    "03C":b"3x45x67x3x2x3",
+    "011":b"\x55\01\00\00\00\00",
+    "021":b"\x68\01\00\00\00\00"
 }
+companies_tester=[
+       b"03E"
+]
 verified_tester=[
-     b"00456",b"00455"
+     b"45",b"55",b"03A",b"03E"
      
 ]
 
 
-positve_Id=b"02023"
+positve_Id=b"7A"
 negative_Id=b"07f"
 
 
@@ -64,7 +67,7 @@ print("Server started. Waiting for client connection...\n")
 while True:
     client_socket, address = server_socke.accept()
     print("Client connected:", address)
-    seed_key=b"0064"
+    seed_key=b"0067"
 
     client_socket.sendall(public_pem)
     client_socket.sendall(seed_key)
@@ -86,7 +89,7 @@ while True:
         print("Tester verified ")
         os.system('cls' if os.name=='nt' else 'clear')
         print("categories")
-        dt=input("1-->Enigne Temperature \t\t2-->Airbag System\t\t3-->Secure_Logg\nEnter: ")
+        dt=input("1-->Engine Temperature \t\t2-->Airbag System\t\t3-->Secure_Logg\nEnter: ")
         while 1:
             if dt == "1":
                     print("90 celsius ")
@@ -98,9 +101,18 @@ while True:
                     client_socket.sendall(negative_Id)
                     break
             if dt=="3":
-                    print("Printing loggs")
-                    Print_logg()
-                    break
+                    if decrypted_service_id in companies_tester:
+                        print("Printing loggs")
+                        Print_logg()
+                        client_socket.sendall(positve_Id)
+                        break
+                    else:
+                           print("unauthorizes Access")
+                           client_socket.sendall(negative_Id)
+                           break
+
+                           
+                    
             
 
 

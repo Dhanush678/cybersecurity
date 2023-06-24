@@ -23,7 +23,7 @@ public_pem = client_socket.recv(4096)
 public_key = serialization.load_pem_public_key(
     public_pem, backend=default_backend())
 
-service_id = "04A"
+service_id = "02A"
 
 encrypted_service_id = public_key.encrypt(
     service_id.encode('utf-8'),
@@ -48,6 +48,7 @@ seed=client_socket.recv(1024)
 print("Obtinaing seeds....\n\n")
 print("recieved seeds:")
 print(seed)
+
 
 
 client_socket.close
